@@ -6,510 +6,191 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#171717">
 <title>AMP MUSIC PLAYER</title>
-
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-height: 100vh;
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-}
-
-#bg {
-    position: fixed;
-    inset: -35px;
-    z-index: -2;
-    background: linear-gradient(135deg,#777,#111);
-    background-size: cover;
-    background-position: center;
-    filter: blur(30px) brightness(.42);
-}
-
-main {
-    width: 100%;
-    max-width: 520px;
-    margin: auto;
-    padding: 25px 10px 35px;
-}
-
-/* PLAYER */
-
-.player {
-    width: 88%;
-    max-width: 430px;
-    margin: 20px auto;
-    padding: 23px;
-    border-radius: 43px;
-    background: rgba(25,25,25,.48);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255,255,255,.14);
-    box-shadow: 0 20px 60px #0005;
-}
-
-/* COVER */
-
-.cover {
-    display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 25px;
-    background: #333;
-}
-
-/* SONG INFORMATION */
-
-.song-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 22px;
-}
-
-.song-text {
-    flex: 1;
-    min-width: 0;
-}
-
-#title {
-    font-size: 19px;
-    line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#artist {
-    color: #bbb;
-    font-size: 15px;
-    margin-top: 5px;
-}
-
-/* SMALL SPECTRUM */
-
-#spectrum {
-    display: block;
-    width: 36px;
-    height: 28px;
-    flex-shrink: 0;
-}
-
-/* PROGRESS */
-
-.progress {
-    margin-top: 27px;
-}
-
-#seek {
-    width: 100%;
-    height: 5px;
-    accent-color: white;
-    cursor: pointer;
-}
-
-.times {
-    display: flex;
-    justify-content: space-between;
-    color: #bbb;
-    font-size: 13px;
-    margin-top: 7px;
-}
-
-/* CONTROLS */
-
-.controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 23px 0 27px;
-}
-
-.control-btn {
-    border: 0;
-    background: none;
-    color: white;
-    font-size: 29px;
-    padding: 8px;
-    cursor: pointer;
-}
-
-.control-btn:active {
-    transform: scale(.88);
-}
-
-#play {
-    font-size: 43px;
-}
-
-/* VOLUME */
-
-.volume {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.volume span {
-    font-size: 19px;
-}
-
-#vol {
-    width: 100%;
-    accent-color: white;
-}
-
-/* DEVICE PILL */
-
-.pill {
-    width: max-content;
-    max-width: 100%;
-    margin: 22px auto 0;
-    padding: 11px 25px;
-    border-radius: 40px;
-    background: #ffffff22;
-    text-align: center;
-    font-size: 17px;
-}
-
-/* PLAYLIST */
-
-.playlist,
-.editor {
-    width: 96%;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 25px;
-    background: rgba(25,25,25,.65);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid #ffffff0c;
-}
-
-.head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.head b {
-    font-size: 17px;
-}
-
-.add {
-    padding: 11px 14px;
-    border: 1px solid #aaa;
-    border-radius: 30px;
-    font-size: 13px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.song {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    margin-top: 10px;
-    background: #ffffff12;
-    border-radius: 13px;
-    cursor: pointer;
-}
-
-.song.active {
-    background: #ffffff35;
-}
-
-.song img {
-    width: 47px;
-    height: 47px;
-    object-fit: cover;
-    border-radius: 9px;
-}
-
-.info {
-    flex: 1;
-    min-width: 0;
-}
-
-.info b {
-    display: block;
-    font-size: 14px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.info small {
-    display: block;
-    color: #bbb;
-    margin-top: 4px;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-/* SETTINGS */
-
-.editor h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.field {
-    display: block;
-    margin: 15px 0 7px;
-    color: #ddd;
-    font-size: 14px;
-}
-
-.editor input[type="text"] {
-    width: 100%;
-    padding: 13px;
-    color: white;
-    background: #ffffff12;
-    border: 1px solid #ffffff30;
-    border-radius: 11px;
-    outline: none;
-    font-size: 15px;
-}
-
-.uploads {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.upload-btn {
-    display: block;
-    padding: 15px 8px;
-    text-align: center;
-    border: 1px solid #ffffff40;
-    border-radius: 13px;
-    background: #ffffff12;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.editor-note {
-    color: #aaa;
-    font-size: 12px;
-    line-height: 1.5;
-    margin-top: 15px;
-}
-
-footer {
-    text-align: center;
-    color: #aaa;
-    font-size: 11px;
-    margin: 25px;
-}
-
-/* MOBILE */
-
-@media(max-width:380px) {
-    .player {
-        width: 91%;
-        padding: 18px;
-        border-radius: 36px;
-    }
-
-    .cover {
-        border-radius: 20px;
-    }
-
-    #title {
-        font-size: 17px;
-    }
-
-    #spectrum {
-        width: 32px;
-        height: 25px;
-    }
-
-    .control-btn {
-        font-size: 25px;
-    }
-
-    #play {
-        font-size: 38px;
-    }
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:#111;color:white;font-family:Arial,sans-serif}
+#bg{position:fixed;inset:-35px;z-index:-2;background:linear-gradient(135deg,#777,#111);background-size:cover;background-position:center;filter:blur(30px) brightness(.42)}
+main{width:100%;max-width:520px;margin:auto;padding:25px 10px 35px}
+.player{width:88%;max-width:430px;margin:20px auto;padding:23px;border-radius:43px;background:rgba(25,25,25,.48);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 60px #0005}
+.cover{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:25px;background:#333}
+.song-info{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px}
+.song-text{flex:1;min-width:0}
+#title{font-size:19px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#artist{color:#bbb;font-size:15px;margin-top:5px}
+#spectrum{display:block;width:36px;height:28px;flex-shrink:0}
+.progress{margin-top:27px}
+#seek{width:100%;height:5px;accent-color:white;cursor:pointer}
+.times{display:flex;justify-content:space-between;color:#bbb;font-size:13px;margin-top:7px}
+.controls{display:flex;align-items:center;justify-content:space-around;margin:23px 0 27px}
+.control-btn{border:0;background:none;color:white;font-size:29px;padding:8px;cursor:pointer}
+.control-btn:active{transform:scale(.88)}
+#play{font-size:43px}
+.volume{display:flex;align-items:center;gap:12px}
+.volume span{font-size:19px}
+#vol{width:100%;accent-color:white}
+.pill{width:max-content;max-width:100%;margin:22px auto 0;padding:11px 25px;border-radius:40px;background:#ffffff22;text-align:center;font-size:17px}
+.playlist,.editor{width:96%;margin:20px auto;padding:20px;border-radius:25px;background:rgba(25,25,25,.65);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid #ffffff0c}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.head b{font-size:17px}
+.add{padding:11px 14px;border:1px solid #aaa;border-radius:30px;font-size:13px;cursor:pointer;white-space:nowrap}
+.song{display:flex;align-items:center;gap:12px;padding:10px;margin-top:10px;background:#ffffff12;border-radius:13px;cursor:pointer}
+.song.active{background:#ffffff35}
+.song img{width:47px;height:47px;object-fit:cover;border-radius:9px}
+.info{flex:1;min-width:0}
+.info b{display:block;font-size:14px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.info small{display:block;color:#bbb;margin-top:4px}
+input[type="file"]{display:none}
+.editor h3{font-size:18px;margin-bottom:20px}
+.field{display:block;margin:15px 0 7px;color:#ddd;font-size:14px}
+.editor input[type="text"]{width:100%;padding:13px;color:white;background:#ffffff12;border:1px solid #ffffff30;border-radius:11px;outline:none;font-size:15px}
+.uploads{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.upload-btn{display:block;padding:15px 8px;text-align:center;border:1px solid #ffffff40;border-radius:13px;background:#ffffff12;font-size:13px;cursor:pointer}
+.editor-note{color:#aaa;font-size:12px;line-height:1.5;margin-top:15px}
+footer{text-align:center;color:#aaa;font-size:11px;margin:25px}
+.export-main-btn{width:100%;margin-top:18px;padding:15px;border:0;border-radius:13px;background:white;color:#111;font-size:14px;font-weight:700;cursor:pointer}
+.export-main-btn:disabled{opacity:.55;cursor:wait}
+.export-modal{display:none;position:fixed;inset:0;z-index:20;padding:18px;background:rgba(0,0,0,.78);align-items:center;justify-content:center}
+.export-modal.show{display:flex}
+.export-panel{width:100%;max-width:420px;max-height:90vh;overflow-y:auto;padding:23px;border:1px solid #ffffff25;border-radius:22px;background:#202020;box-shadow:0 20px 70px #0009}
+.export-heading{display:flex;align-items:center;justify-content:space-between}
+.export-heading h2{font-size:19px}
+.close-export{border:0;background:transparent;color:white;font-size:29px;cursor:pointer;line-height:1}
+.export-select{width:100%;padding:14px;border-radius:11px;color:white;background:#333;border:1px solid #ffffff35;font-size:15px}
+.export-select option{background:#222;color:white}
+.export-note{color:#aaa;font-size:12px;line-height:1.5;margin-top:16px}
+@media(max-width:380px){
+.player{width:91%;padding:18px;border-radius:36px}
+.cover{border-radius:20px}
+#title{font-size:17px}
+#spectrum{width:32px;height:25px}
+.control-btn{font-size:25px}
+#play{font-size:38px}
 }
 </style>
 </head>
-
 <body>
-
 <div id="bg"></div>
-
 <main>
 
-<!-- MUSIC PLAYER -->
-
 <section class="player">
-
-    <img src=""
-         id="cover"
-         class="cover"
-         alt="Album Cover">
-
-    <div class="song-info">
-
-        <div class="song-text">
-            <h3 id="title">MUSICAL PLAYER</h3>
-            <div id="artist">Pilih lagu favorit kamu</div>
-        </div>
-
-        <!-- SMALL AUDIO SPECTRUM -->
-
-        <canvas id="spectrum"></canvas>
-
-    </div>
-
-    <div class="progress">
-
-        <input type="range"
-               id="seek"
-               min="0"
-               max="100"
-               value="0">
-
-        <div class="times">
-            <span id="now">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
-
-    </div>
-
-    <div class="controls">
-
-        <button class="control-btn" id="prev">◀◀</button>
-
-        <button class="control-btn" id="play">▶</button>
-
-        <button class="control-btn" id="next">▶▶</button>
-
-    </div>
-
-    <div class="volume">
-        <span>◀</span>
-
-        <input type="range"
-               id="vol"
-               min="0"
-               max="1"
-               step="0.01"
-               value="0.8">
-
-        <span>🔊</span>
-    </div>
-
-    <div class="pill" id="device">
-        ◉ iPhone
-    </div>
-
-    <audio id="audio" preload="metadata"></audio>
-
+<img src="" id="cover" class="cover" alt="Album Cover">
+<div class="song-info">
+<div class="song-text">
+<h3 id="title">MUSICAL PLAYER</h3>
+<div id="artist">Pilih lagu favorit kamu</div>
+</div>
+<canvas id="spectrum"></canvas>
+</div>
+<div class="progress">
+<input type="range" id="seek" min="0" max="100" value="0">
+<div class="times">
+<span id="now">0:00</span>
+<span id="duration">0:00</span>
+</div>
+</div>
+<div class="controls">
+<button class="control-btn" id="prev">◀◀</button>
+<button class="control-btn" id="play">▶</button>
+<button class="control-btn" id="next">▶▶</button>
+</div>
+<div class="volume">
+<span>◀</span>
+<input type="range" id="vol" min="0" max="1" step="0.01" value="0.8">
+<span>🔊</span>
+</div>
+<div class="pill" id="device">◉ iPhone</div>
+<audio id="audio" preload="metadata"></audio>
 </section>
-
-
-<!-- PLAYLIST -->
 
 <section class="playlist">
-
-    <div class="head">
-
-        <b>MY PLAYLIST</b>
-
-        <label class="add">
-            ＋ Tambah Lagu
-
-            <input type="file"
-                   id="files"
-                   accept="audio/*"
-                   multiple>
-        </label>
-
-    </div>
-
-    <div id="list">
-        <p style="color:#bbb;font-size:14px;margin-top:20px">
-            Belum ada lagu. Tambahkan musik dari HP kamu.
-        </p>
-    </div>
-
+<div class="head">
+<b>MY PLAYLIST</b>
+<label class="add">
+＋ Tambah Lagu
+<input type="file" id="files" accept="audio/*" multiple>
+</label>
+</div>
+<div id="list">
+<p style="color:#bbb;font-size:14px;margin-top:20px">
+Belum ada lagu. Tambahkan musik dari HP kamu.
+</p>
+</div>
 </section>
-
-
-<!-- AMP SETTINGS -->
 
 <section class="editor">
+<h3>⚙️ PENGATURAN AMP</h3>
+<label class="field">Nama Website</label>
+<input type="text" id="websiteName" value="AMP">
+<label class="field">Judul Musik</label>
+<input type="text" id="editTitle" value="MUSICAL PLAYER">
+<label class="field">Nama Artis</label>
+<input type="text" id="editArtist" value="Pilih lagu favorit kamu">
+<label class="field">Tulisan Perangkat</label>
+<input type="text" id="editDevice" value="iPhone">
 
-    <h3>⚙️ PENGATURAN AMP</h3>
+<div class="uploads">
+<label class="upload-btn">
+🖼️ Ganti Background
+<input type="file" id="bgFile" accept="image/*">
+</label>
+<label class="upload-btn">
+🎵 Ganti Cover
+<input type="file" id="coverFile" accept="image/*">
+</label>
+</div>
 
-    <label class="field">Nama Website</label>
-    <input type="text" id="websiteName" value="AMP">
+<button type="button" class="export-main-btn" id="openExport">
+⬇ EXPORT VIDEO
+</button>
 
-    <label class="field">Judul Musik</label>
-    <input type="text" id="editTitle" value="MUSICAL PLAYER">
-
-    <label class="field">Nama Artis</label>
-    <input type="text" id="editArtist" value="Pilih lagu favorit kamu">
-
-    <label class="field">Tulisan Perangkat</label>
-    <input type="text" id="editDevice" value="iPhone">
-
-    <div class="uploads">
-
-        <label class="upload-btn">
-            🖼️ Ganti Background
-            <input type="file"
-                   id="bgFile"
-                   accept="image/*">
-        </label>
-
-        <label class="upload-btn">
-            🎵 Ganti Cover
-            <input type="file"
-                   id="coverFile"
-                   accept="image/*">
-        </label>
-
-    </div>
-
-    <p class="editor-note">
-        Gambar dan tulisan akan langsung diterapkan
-        pada tampilan AMP Music Player.
-    </p>
-
+<p class="editor-note">
+Gambar dan tulisan akan langsung diterapkan pada tampilan AMP Music Player.
+</p>
 </section>
 
-<footer>
-    MADE WITH ♡ AMP MUSIC PLAYER
-</footer>
+<section class="export-modal" id="exportModal" aria-hidden="true">
+<div class="export-panel">
+<div class="export-heading">
+<h2>EXPORT VIDEO</h2>
+<button type="button" id="closeExport" class="close-export">×</button>
+</div>
 
+<label class="field" for="exportResolution">Resolusi</label>
+<select id="exportResolution" class="export-select">
+<option value="640x360">360p</option>
+<option value="854x480">480p</option>
+<option value="1280x720" selected>720p HD</option>
+<option value="1920x1080">1080p Full HD</option>
+<option value="2560x1440">1440p 2K</option>
+<option value="3840x2160">2160p 4K</option>
+</select>
+
+<label class="field" for="exportFps">Frame rate (FPS)</label>
+<select id="exportFps" class="export-select">
+<option value="24">24 FPS</option>
+<option value="30" selected>30 FPS</option>
+<option value="48">48 FPS</option>
+<option value="60">60 FPS</option>
+</select>
+
+<p class="export-note" id="exportStatus">
+Video akan diekspor dalam format WEBM. Durasi mengikuti lagu yang diputar.
+</p>
+
+<button type="button" class="export-main-btn" id="startExport">
+MULAI EXPORT
+</button>
+</div>
+</section>
+
+<footer>MADE WITH ♡ AMP MUSIC PLAYER</footer>
 </main>
 
-
 <script>
-
-/* ELEMENTS */
-
 const audio = document.getElementById("audio");
 const playButton = document.getElementById("play");
 const filesInput = document.getElementById("files");
 const playlist = document.getElementById("list");
-
 const cover = document.getElementById("cover");
 const title = document.getElementById("title");
 const artist = document.getElementById("artist");
@@ -520,29 +201,19 @@ let current = 0;
 let coverURL = "";
 let bgURL = "";
 
-
-/* DEFAULT COVER */
-
 const placeholder =
 "data:image/svg+xml;charset=UTF-8," +
 encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 500 500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
 <rect width="500" height="500" fill="#303030"/>
-<text x="50%" y="47%"
-fill="white" font-size="55"
-text-anchor="middle">AMP</text>
-<text x="50%" y="60%"
-fill="white" font-size="43"
-text-anchor="middle">MUSIC</text>
+<text x="50%" y="47%" fill="white" font-size="55" text-anchor="middle">AMP</text>
+<text x="50%" y="60%" fill="white" font-size="43" text-anchor="middle">MUSIC</text>
 </svg>
 `);
 
 cover.src = placeholder;
 
-
 /* AUDIO SYSTEM */
-
 let audioContext = null;
 let analyser = null;
 let audioSource = null;
@@ -550,97 +221,57 @@ let frequencyData = null;
 let spectrumStarted = false;
 
 function setupAudio() {
-
     if (audioContext) return;
 
     const AudioContextClass =
-        window.AudioContext ||
-        window.webkitAudioContext;
+        window.AudioContext || window.webkitAudioContext;
 
     if (!AudioContextClass) return;
 
     try {
-
         audioContext = new AudioContextClass();
-
         analyser = audioContext.createAnalyser();
-
         analyser.fftSize = 256;
         analyser.smoothingTimeConstant = 0.8;
 
-        frequencyData = new Uint8Array(
-            analyser.frequencyBinCount
-        );
-
-        audioSource =
-            audioContext.createMediaElementSource(audio);
+        frequencyData = new Uint8Array(analyser.frequencyBinCount);
+        audioSource = audioContext.createMediaElementSource(audio);
 
         audioSource.connect(analyser);
-
         analyser.connect(audioContext.destination);
 
         startSpectrum();
-
     } catch(error) {
-
-        console.error("Audio setup:",error);
-
-        if (audioSource && audioContext) {
-            try {
-                audioSource.connect(audioContext.destination);
-            } catch(e) {
-                console.error(e);
-            }
-        }
-
+        console.error("Audio setup:", error);
     }
-
 }
 
-
 /* PLAY MUSIC */
-
 function startMusic() {
-
     setupAudio();
 
-    if (audioContext &&
-        audioContext.state === "suspended") {
-
-        audioContext.resume().catch(error => {
-            console.error(error);
-        });
-
+    if (audioContext && audioContext.state === "suspended") {
+        audioContext.resume().catch(error => console.error(error));
     }
 
     const result = audio.play();
 
     if (result && result.catch) {
-        result.catch(error => {
-            console.error("Audio playback:",error);
-        });
+        result.catch(error => console.error("Audio playback:", error));
     }
-
 }
 
-
-/* SMALL SPECTRUM */
-
+/* SPECTRUM */
 const canvas = document.getElementById("spectrum");
 const ctx = canvas.getContext("2d");
 
 function startSpectrum() {
-
     if (spectrumStarted) return;
-
     spectrumStarted = true;
-
     drawSpectrum();
-
 }
 
 function drawSpectrum() {
-
     requestAnimationFrame(drawSpectrum);
 
     const width = canvas.clientWidth;
@@ -649,88 +280,57 @@ function drawSpectrum() {
     if (!width || !height) return;
 
     const dpr = window.devicePixelRatio || 1;
-
     const pixelWidth = Math.round(width * dpr);
     const pixelHeight = Math.round(height * dpr);
 
-    if (
-        canvas.width !== pixelWidth ||
-        canvas.height !== pixelHeight
-    ) {
+    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
         canvas.width = pixelWidth;
         canvas.height = pixelHeight;
     }
 
     ctx.setTransform(dpr,0,0,dpr,0,0);
-
     ctx.clearRect(0,0,width,height);
 
     if (!analyser || audio.paused) return;
 
     analyser.getByteFrequencyData(frequencyData);
 
-    /* SMALLER BARS */
-
     const bars = 10;
     const gap = 2;
-
-    const barWidth =
-        (width - (bars - 1) * gap) / bars;
-
+    const barWidth = (width - (bars - 1) * gap) / bars;
     const center = height / 2;
     const maxHeight = height * 0.9;
 
     for (let i = 0; i < bars; i++) {
-
         const index = Math.min(
             frequencyData.length - 1,
             Math.floor(2 + i * 3)
         );
 
         let value = frequencyData[index] / 255;
-
         value = Math.pow(value,0.85);
 
-        const barHeight = Math.max(
-            2,
-            value * maxHeight
-        );
-
+        const barHeight = Math.max(2,value * maxHeight);
         const x = i * (barWidth + gap);
         const y = center - barHeight / 2;
 
         ctx.fillStyle = "#ffffff";
-
-        ctx.fillRect(
-            x,
-            y,
-            barWidth,
-            barHeight
-        );
-
+        ctx.fillRect(x,y,barWidth,barHeight);
     }
-
 }
 
-
-/* TIME FORMAT */
-
+/* TIME */
 function formatTime(seconds) {
-
     if (!Number.isFinite(seconds)) return "0:00";
 
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
 
     return min + ":" + String(sec).padStart(2,"0");
-
 }
 
-
 /* LOAD SONG */
-
 function loadSong(index,autoplay = true) {
-
     if (!songs.length) return;
 
     current = (index + songs.length) % songs.length;
@@ -738,120 +338,85 @@ function loadSong(index,autoplay = true) {
     const song = songs[current];
 
     audio.src = song.url;
-
     title.textContent = song.name;
     artist.textContent = song.artist;
 
-    document.getElementById("editTitle").value =
-        song.name;
-
-    document.getElementById("editArtist").value =
-        song.artist;
+    document.getElementById("editTitle").value = song.name;
+    document.getElementById("editArtist").value = song.artist;
 
     cover.src = coverURL || placeholder;
 
     document.getElementById("seek").value = 0;
-
     document.getElementById("now").textContent = "0:00";
-
     document.getElementById("duration").textContent = "0:00";
 
     renderPlaylist();
 
     if (autoplay) startMusic();
-
 }
 
-
-/* RENDER PLAYLIST */
-
+/* PLAYLIST */
 function renderPlaylist() {
-
     playlist.innerHTML = "";
 
     if (!songs.length) {
-
         playlist.innerHTML = `
             <p style="color:#bbb;font-size:14px;margin-top:20px">
             Belum ada lagu. Tambahkan musik dari HP kamu.
             </p>
         `;
-
         return;
-
     }
 
     songs.forEach((song,index) => {
-
         const row = document.createElement("div");
 
-        row.className =
-            "song" + (index === current ? " active" : "");
+        row.className = "song" + (index === current ? " active" : "");
 
         const img = document.createElement("img");
-
         img.src = coverURL || placeholder;
 
         const info = document.createElement("div");
-
         info.className = "info";
 
         const name = document.createElement("b");
-
         name.textContent = song.name;
 
         const singer = document.createElement("small");
-
         singer.textContent = song.artist;
 
         info.append(name,singer);
 
         const icon = document.createElement("span");
-
         icon.textContent = "♫";
 
         row.append(img,info,icon);
 
-        row.addEventListener("click",() => {
-            loadSong(index,true);
-        });
+        row.addEventListener("click",() => loadSong(index,true));
 
         playlist.appendChild(row);
-
     });
-
 }
 
-
 /* ADD SONGS */
-
 filesInput.addEventListener("change",event => {
-
     const selected = Array.from(event.target.files);
 
     selected.forEach(file => {
-
         songs.push({
             name: file.name.replace(/\.[^.]+$/,""),
             artist: "Unknown Artist",
             url: URL.createObjectURL(file)
         });
-
     });
 
-    if (songs.length) {
-        loadSong(songs.length - 1,false);
-    }
+    if (songs.length) loadSong(songs.length - 1,false);
 
     event.target.value = "";
-
 });
 
-
 /* PLAY BUTTON */
-
 playButton.addEventListener("click",() => {
-
     if (!songs.length) {
         filesInput.click();
         return;
@@ -862,11 +427,7 @@ playButton.addEventListener("click",() => {
     } else {
         audio.pause();
     }
-
 });
-
-
-/* PLAY PAUSE ICON */
 
 audio.addEventListener("play",() => {
     playButton.textContent = "Ⅱ";
@@ -876,202 +437,490 @@ audio.addEventListener("pause",() => {
     playButton.textContent = "▶";
 });
 
-
 /* NEXT */
-
-document.getElementById("next")
-.addEventListener("click",() => {
-
-    if (songs.length) {
-        loadSong(current + 1,true);
-    }
-
+document.getElementById("next").addEventListener("click",() => {
+    if (songs.length) loadSong(current + 1,true);
 });
-
 
 /* PREVIOUS */
-
-document.getElementById("prev")
-.addEventListener("click",() => {
-
-    if (songs.length) {
-        loadSong(current - 1,true);
-    }
-
+document.getElementById("prev").addEventListener("click",() => {
+    if (songs.length) loadSong(current - 1,true);
 });
 
-
 /* AUTO NEXT */
-
 audio.addEventListener("ended",() => {
-
     if (songs.length > 1) {
         loadSong(current + 1,true);
     } else {
         playButton.textContent = "▶";
     }
-
 });
 
-
 /* PROGRESS */
-
 audio.addEventListener("timeupdate",() => {
-
-    document.getElementById("now").textContent =
-        formatTime(audio.currentTime);
-
-    document.getElementById("duration").textContent =
-        formatTime(audio.duration);
+    document.getElementById("now").textContent = formatTime(audio.currentTime);
+    document.getElementById("duration").textContent = formatTime(audio.duration);
 
     if (audio.duration) {
-
         document.getElementById("seek").value =
             audio.currentTime / audio.duration * 100;
-
     }
-
 });
 
 audio.addEventListener("loadedmetadata",() => {
-
     document.getElementById("duration").textContent =
         formatTime(audio.duration);
-
 });
 
-document.getElementById("seek")
-.addEventListener("input",event => {
-
+document.getElementById("seek").addEventListener("input",event => {
     if (audio.duration) {
-
         audio.currentTime =
             Number(event.target.value) / 100 * audio.duration;
-
     }
-
 });
 
-
 /* VOLUME */
-
 const volume = document.getElementById("vol");
-
 audio.volume = 0.8;
 
 volume.addEventListener("input",event => {
-
     audio.volume = Number(event.target.value);
-
 });
 
-
 /* EDIT TITLE */
-
-document.getElementById("editTitle")
-.addEventListener("input",event => {
-
+document.getElementById("editTitle").addEventListener("input",event => {
     const value = event.target.value;
-
     title.textContent = value || "MUSICAL PLAYER";
 
     if (songs[current]) {
         songs[current].name = value;
         renderPlaylist();
     }
-
 });
 
-
 /* EDIT ARTIST */
-
-document.getElementById("editArtist")
-.addEventListener("input",event => {
-
+document.getElementById("editArtist").addEventListener("input",event => {
     const value = event.target.value;
-
     artist.textContent = value;
 
     if (songs[current]) {
         songs[current].artist = value;
         renderPlaylist();
     }
-
 });
-
 
 /* EDIT DEVICE */
-
-document.getElementById("editDevice")
-.addEventListener("input",event => {
-
-    document.getElementById("device").textContent =
-        "◉ " + event.target.value;
-
+document.getElementById("editDevice").addEventListener("input",event => {
+    document.getElementById("device").textContent = "◉ " + event.target.value;
 });
-
 
 /* WEBSITE NAME */
-
-document.getElementById("websiteName")
-.addEventListener("input",event => {
-
+document.getElementById("websiteName").addEventListener("input",event => {
     const name = event.target.value.trim() || "AMP";
-
     document.title = name + " - MUSIC PLAYER";
-
 });
 
-
 /* CHANGE COVER */
-
-document.getElementById("coverFile")
-.addEventListener("change",event => {
-
+document.getElementById("coverFile").addEventListener("change",event => {
     const file = event.target.files[0];
-
     if (!file) return;
 
     if (coverURL) URL.revokeObjectURL(coverURL);
 
     coverURL = URL.createObjectURL(file);
-
     cover.src = coverURL;
 
     renderPlaylist();
-
     event.target.value = "";
-
 });
 
-
 /* CHANGE BACKGROUND */
-
-document.getElementById("bgFile")
-.addEventListener("change",event => {
-
+document.getElementById("bgFile").addEventListener("change",event => {
     const file = event.target.files[0];
-
     if (!file) return;
 
     if (bgURL) URL.revokeObjectURL(bgURL);
 
     bgURL = URL.createObjectURL(file);
-
     bg.style.backgroundImage = `url("${bgURL}")`;
 
     event.target.value = "";
-
 });
 
+/* EXPORT VIDEO */
+const exportModal = document.getElementById("exportModal");
+const openExportButton = document.getElementById("openExport");
+const closeExportButton = document.getElementById("closeExport");
+const startExportButton = document.getElementById("startExport");
+const exportStatus = document.getElementById("exportStatus");
+
+openExportButton.addEventListener("click",() => {
+    exportModal.classList.add("show");
+    exportModal.setAttribute("aria-hidden","false");
+});
+
+closeExportButton.addEventListener("click",closeExport);
+
+exportModal.addEventListener("click",event => {
+    if (event.target === exportModal) closeExport();
+});
+
+function closeExport() {
+    exportModal.classList.remove("show");
+    exportModal.setAttribute("aria-hidden","true");
+}
+
+function drawCoverImage(context,image,x,y,width,height,radius) {
+    context.save();
+    context.beginPath();
+    context.roundRect(x,y,width,height,radius);
+    context.clip();
+
+    if (image && image.complete && image.naturalWidth) {
+        const scale = Math.max(
+            width / image.naturalWidth,
+            height / image.naturalHeight
+        );
+
+        const sw = width / scale;
+        const sh = height / scale;
+        const sx = (image.naturalWidth - sw) / 2;
+        const sy = (image.naturalHeight - sh) / 2;
+
+        context.drawImage(image,sx,sy,sw,sh,x,y,width,height);
+    } else {
+        context.fillStyle = "#303030";
+        context.fillRect(x,y,width,height);
+    }
+
+    context.restore();
+}
+
+startExportButton.addEventListener("click",async () => {
+
+    if (!songs.length || !audio.src) {
+        exportStatus.textContent =
+            "Tambahkan lagu terlebih dahulu sebelum export.";
+        return;
+    }
+
+    if (!window.MediaRecorder ||
+        !HTMLCanvasElement.prototype.captureStream) {
+        exportStatus.textContent =
+            "Browser belum mendukung export video. Coba Chrome terbaru.";
+        return;
+    }
+
+    const dimensions = document
+        .getElementById("exportResolution")
+        .value.split("x").map(Number);
+
+    const fps = Number(document.getElementById("exportFps").value);
+    const [videoWidth,videoHeight] = dimensions;
+
+    let audioStream;
+
+    try {
+        const captureAudio =
+            audio.captureStream || audio.mozCaptureStream;
+
+        if (!captureAudio) {
+            throw new Error("Audio capture tidak didukung browser.");
+        }
+
+        audioStream = captureAudio();
+
+    } catch(error) {
+        exportStatus.textContent = error.message;
+        return;
+    }
+
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = videoWidth;
+    exportCanvas.height = videoHeight;
+
+    const exportCtx = exportCanvas.getContext("2d");
+    const videoStream = exportCanvas.captureStream(fps);
+
+    audioStream.getAudioTracks().forEach(track => {
+        videoStream.addTrack(track);
+    });
+
+    const mimeCandidates = [
+        "video/webm;codecs=vp9,opus",
+        "video/webm;codecs=vp8,opus",
+        "video/webm"
+    ];
+
+    const mimeType = mimeCandidates.find(type =>
+        MediaRecorder.isTypeSupported(type)
+    );
+
+    if (!mimeType) {
+        exportStatus.textContent =
+            "Format video tidak didukung browser ini.";
+        return;
+    }
+
+    const chunks = [];
+    let recorder;
+
+    try {
+        recorder = new MediaRecorder(videoStream,{
+            mimeType,
+            videoBitsPerSecond:Math.min(
+                35000000,
+                Math.max(
+                    2500000,
+                    videoWidth * videoHeight * fps * 0.07
+                )
+            )
+        });
+    } catch(error) {
+        exportStatus.textContent =
+            "Tidak bisa memulai export: " + error.message;
+        return;
+    }
+
+    const exportTitle = title.textContent || "MUSICAL PLAYER";
+    const exportArtist = artist.textContent || "";
+    const coverImage = cover;
+
+    let animationId;
+    let backgroundImage = null;
+
+    if (bgURL) {
+        backgroundImage = new Image();
+        backgroundImage.src = bgURL;
+    }
+
+    function drawExportFrame() {
+        const w = exportCanvas.width;
+        const h = exportCanvas.height;
+        const scale = Math.min(w,h);
+
+        exportCtx.fillStyle = "#111";
+        exportCtx.fillRect(0,0,w,h);
+
+        if (backgroundImage &&
+            backgroundImage.complete &&
+            backgroundImage.naturalWidth) {
+
+            const s = Math.max(
+                w / backgroundImage.naturalWidth,
+                h / backgroundImage.naturalHeight
+            );
+
+            const bw = backgroundImage.naturalWidth * s;
+            const bh = backgroundImage.naturalHeight * s;
+
+            exportCtx.save();
+
+            exportCtx.filter =
+                "blur(" + Math.max(12,scale * 0.025) +
+                "px) brightness(.42)";
+
+            exportCtx.drawImage(
+                backgroundImage,
+                (w-bw)/2,
+                (h-bh)/2,
+                bw,
+                bh
+            );
+
+            exportCtx.restore();
+
+        } else if (!backgroundImage) {
+
+            const gradient = exportCtx.createLinearGradient(0,0,w,h);
+            gradient.addColorStop(0,"#555");
+            gradient.addColorStop(1,"#111");
+
+            exportCtx.fillStyle = gradient;
+            exportCtx.fillRect(0,0,w,h);
+        }
+
+        const cardWidth = w * 0.78;
+        const cardX = (w-cardWidth)/2;
+        const coverSize = cardWidth * 0.82;
+        const coverX = (w-coverSize)/2;
+        const coverY = h * 0.16;
+
+        exportCtx.fillStyle = "rgba(20,20,20,.58)";
+        exportCtx.beginPath();
+
+        exportCtx.roundRect(
+            cardX,
+            h*0.09,
+            cardWidth,
+            h*0.82,
+            Math.max(22,scale*0.04)
+        );
+
+        exportCtx.fill();
+
+        drawCoverImage(
+            exportCtx,
+            coverImage,
+            coverX,
+            coverY,
+            coverSize,
+            coverSize,
+            Math.max(16,scale*0.025)
+        );
+
+        exportCtx.textAlign = "center";
+        exportCtx.fillStyle = "#fff";
+
+        exportCtx.font =
+            "bold " + Math.round(scale*0.045) + "px Arial";
+
+        exportCtx.fillText(
+            exportTitle.slice(0,42),
+            w/2,
+            coverY+coverSize+h*0.075
+        );
+
+        exportCtx.fillStyle = "#ddd";
+        exportCtx.font = Math.round(scale*0.029)+"px Arial";
+
+        exportCtx.fillText(
+            exportArtist.slice(0,48),
+            w/2,
+            coverY+coverSize+h*0.12
+        );
+
+        const barY = h*0.78;
+        const barWidth = w*0.62;
+        const barX = (w-barWidth)/2;
+
+        exportCtx.fillStyle = "rgba(255,255,255,.3)";
+        exportCtx.fillRect(barX,barY,barWidth,Math.max(3,scale*.004));
+
+        const progress = audio.duration
+            ? audio.currentTime/audio.duration
+            : 0;
+
+        exportCtx.fillStyle = "#fff";
+
+        exportCtx.fillRect(
+            barX,
+            barY,
+            barWidth*Math.max(0,Math.min(1,progress)),
+            Math.max(3,scale*.004)
+        );
+
+        if (analyser && frequencyData) {
+            analyser.getByteFrequencyData(frequencyData);
+        }
+
+        const bars = 36;
+        const gap = Math.max(3,scale*.006);
+        const totalWidth = w*.58;
+        const barW = (totalWidth-(bars-1)*gap)/bars;
+        const baseY = h*.86;
+
+        for (let i=0;i<bars;i++) {
+            const value = frequencyData
+                ? frequencyData[(i*3)%frequencyData.length]/255
+                : 0.08;
+
+            const barH = Math.max(
+                scale*.008,
+                value*h*.055
+            );
+
+            exportCtx.fillStyle = "#fff";
+
+            exportCtx.fillRect(
+                (w-totalWidth)/2+i*(barW+gap),
+                baseY-barH/2,
+                barW,
+                barH
+            );
+        }
+
+        animationId = requestAnimationFrame(drawExportFrame);
+    }
+
+    recorder.ondataavailable = event => {
+        if (event.data && event.data.size) {
+            chunks.push(event.data);
+        }
+    };
+
+    recorder.onerror = () => {
+        exportStatus.textContent =
+            "Terjadi kesalahan saat merekam video.";
+
+        startExportButton.disabled = false;
+        cancelAnimationFrame(animationId);
+    };
+
+    recorder.onstop = () => {
+        cancelAnimationFrame(animationId);
+
+        const blob = new Blob(chunks,{type:mimeType});
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "AMP-MUSIC-EXPORT.webm";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => URL.revokeObjectURL(url),60000);
+
+        videoStream.getTracks().forEach(track => track.stop());
+
+        exportStatus.textContent =
+            "Export selesai. Video WEBM sudah diunduh.";
+
+        startExportButton.disabled = false;
+        startExportButton.textContent = "MULAI EXPORT";
+    };
+
+    try {
+        startExportButton.disabled = true;
+        startExportButton.textContent = "SEDANG EXPORT...";
+
+        exportStatus.textContent =
+            "Sedang merekam lagu. Jangan tutup halaman sampai selesai.";
+
+        audio.pause();
+        audio.currentTime = 0;
+
+        drawExportFrame();
+        recorder.start(1000);
+
+        await audio.play();
+
+        audio.addEventListener("ended",() => {
+            if (recorder.state !== "inactive") {
+                recorder.stop();
+            }
+        },{once:true});
+
+    } catch(error) {
+
+        if (recorder.state !== "inactive") {
+            recorder.stop();
+        }
+
+        exportStatus.textContent =
+            "Gagal memulai export: " + error.message;
+
+        startExportButton.disabled = false;
+        startExportButton.textContent = "MULAI EXPORT";
+    }
+});
 
 /* INITIALIZATION */
-
 document.title = "AMP - MUSIC PLAYER";
-
 renderPlaylist();
 
 </script>
-
 </body>
 </html>
